@@ -1,0 +1,253 @@
+Two Pointers (Same Direction)
+
+Core Concept
+Two pointers moving in the same direction is a technique where both pointers start at the beginning of an array/string and move forward, but at different speeds or conditions. This creates a "sliding window" or "fast-slow" relationship that helps solve problems efficiently in O(n) time instead of O(n²).
+
+Key Characteristics:
+> Both pointers start at index 0 (or beginning)
+> Both move rightward/forward only
+> They never move backward
+> Usually one pointer moves faster than the other
+> Time complexity: O(n) with single pass
+
+Common Patterns
+1. Fast-Slow Pointer Pattern
+- Fast pointer explores ahead
+- Slow pointer marks a position or builds result
+- Used for: in-place modifications, removing elements
+
+2. Sliding Window Pattern
+- One pointer expands the window (right)
+- Other pointer contracts when needed (left)
+- Used for: subarray problems, string problems
+
+Problem-Solving Techniques
+> Technique 1: Remove/Filter Elements In-Place
+When to use: Remove duplicates, filter unwanted elements without extra space
+Example Problem: Remove duplicates from sorted array
+
+> Technique 2: Partition/Segregate Elements
+When to use: Move elements satisfying condition to one side
+Example Problem: Move all zeros to end
+
+> Technique 3: Sliding Window (Variable Size)
+When to use: Find subarrays/substrings with certain properties
+Example Problem: Longest substring without repeating characters
+
+> Technique 4: Container/Trap Problems
+When to use: Problems involving area, volume, or trapping
+Example Problem: Container with most water
+
+## Step-by-Step Problem Solving Framework
+
+### 1. **Identify if Two Pointers Applies**
+Ask yourself:
+- ✓ Can I solve this with a single pass?
+- ✓ Do I need to compare/track multiple positions?
+- ✓ Is the array sorted or can I sort it?
+- ✓ Do I need to avoid extra space?
+
+### 2. **Choose the Pattern**
+- **Fast-Slow:** Modifying array in-place, removing elements
+- **Sliding Window:** Subarray/substring with conditions
+- **Left-Right:** Finding pairs, optimizing area/sum
+
+### 3. **Define Pointer Roles**
+```
+Slow pointer: Tracks the "result" position
+Fast pointer: Explores and finds valid elements
+OR
+Left pointer: Start of window/range
+Right pointer: End of window/range
+
+### 4. **Determine Movement Rules**
+- When should each pointer move?
+- What conditions trigger movement?
+- How do pointers interact?
+
+Common Mistakes to Avoid
+> Moving both pointers at same speed → Won't solve the problem
+> Not checking boundary conditions → Index out of bounds
+> Forgetting to initialize pointers correctly → Wrong starting position
+> Moving pointers backward → Violates same-direction principle
+> Not understanding when to move which pointer → Infinite loops
+
+Time & Space Complexity
+Time: O(n) - single pass through array
+Space: O(1) - only using two pointer variables (in-place)
+This makes it extremely efficient compared to nested loops O(n²) or using extra data structures.
+The key insight: By moving pointers intelligently in one direction, we can solve problems that seem to require multiple passes or extra space!
+
+
+LeetCode Problems: Two Pointers (Same Direction)
+Easy Problems
+26. Remove Duplicates from Sorted Array
+Remove duplicates in-place, return new length
+Classic slow-fast pointer
+
+27. Remove Element
+Remove all instances of a value in-place
+Fast pointer finds valid elements, slow builds result
+
+283. Move Zeroes
+Move all zeros to the end while maintaining order
+Partition pattern
+
+844. Backspace String Compare
+Compare strings with backspace characters
+Two pointers from end or stack simulation
+
+905. Sort Array By Parity
+Move even numbers before odd numbers
+Partition with two pointers
+
+977. Squares of a Sorted Array
+Square elements and return sorted array
+Two pointers from both ends (can use same direction approach)
+
+1089. Duplicate Zeros
+Duplicate each zero, shifting remaining elements
+Two-pass approach with pointers
+
+1768. Merge Strings Alternately
+Merge two strings by alternating characters
+Two pointers on different strings
+
+
+Medium Problems
+3. Longest Substring Without Repeating Characters
+Find longest substring with unique characters
+Sliding window classic
+
+80. Remove Duplicates from Sorted Array II
+Allow duplicates at most twice
+Extension of problem #26
+
+209. Minimum Size Subarray Sum
+Smallest subarray with sum ≥ target
+Variable sliding window
+
+424. Longest Repeating Character Replacement
+Longest substring after replacing k characters
+Sliding window with frequency tracking
+
+438. Find All Anagrams in a String
+Find all anagram substrings
+Fixed-size sliding window
+
+567. Permutation in String
+Check if one string is permutation of substring of another
+Sliding window with character count
+
+713. Subarray Product Less Than K
+Count subarrays with product < k
+Sliding window with product tracking
+
+904. Fruit Into Baskets
+Pick fruits with at most 2 types
+Sliding window with constraint
+
+1004. Max Consecutive Ones III
+Longest subarray of 1s after flipping k zeros
+Sliding window with flip count
+
+1208. Get Equal Substrings Within Budget
+Maximum length substring within cost budget
+Sliding window with cost tracking
+
+1248. Count Number of Nice Subarrays
+Subarrays with exactly k odd numbers
+Sliding window with odd count
+
+1343. Number of Sub-arrays of Size K and Average Greater than or Equal to Threshold
+Count subarrays meeting average threshold
+Fixed-size sliding window
+
+1358. Number of Substrings Containing All Three Characters
+Count substrings with a, b, c
+Sliding window with character tracking
+
+1423. Maximum Points You Can Obtain from Cards
+Pick k cards from either end to maximize sum
+Sliding window (inverse thinking)
+
+1438. Longest Continuous Subarray With Absolute Diff Less Than or Equal to Limit
+Longest subarray with bounded difference
+Sliding window with deque for min/max
+
+1493. Longest Subarray of 1's After Deleting One Element
+Longest consecutive 1s after one deletion
+Sliding window variant
+
+1658. Minimum Operations to Reduce X to Zero
+Remove elements from ends to reach sum
+Inverse sliding window (find max middle sum)
+
+1679. Max Number of K-Sum Pairs
+Count pairs with sum k
+Two pointers after sorting
+
+1695. Maximum Erasure Value
+Maximum sum of unique elements subarray
+Sliding window with set
+
+2024. Maximize the Confusion of an Exam
+Longest consecutive same answer after k flips
+Similar to #1004
+
+2134. Minimum Swaps to Group All 1's Together II
+Circular array, group all 1s
+Fixed-size sliding window on circular array
+
+2260. Minimum Consecutive Cards to Pick Up
+Shortest subarray with duplicate
+Sliding window with hashmap
+
+Hard Problems
+76. Minimum Window Substring
+Smallest window containing all characters of pattern
+Classic hard sliding window
+
+239. Sliding Window Maximum
+Maximum in each window of size k
+Monotonic deque with sliding window
+
+340. Longest Substring with At Most K Distinct Characters 🔒
+Longest substring with ≤ k distinct chars
+Sliding window with hashmap
+
+395. Longest Substring with At Least K Repeating Characters
+Each character appears at least k times
+Divide and conquer or sliding window with constraints
+
+480. Sliding Window Median
+Find median in each sliding window
+Two heaps or multiset with sliding window
+
+992. Subarrays with K Different Integers
+Count subarrays with exactly k distinct
+Two sliding windows: at-most-K minus at-most-(K-1)
+
+1040. Moving Stones Until Consecutive II
+Game theory with sliding window
+Complex sliding window application
+
+1234. Replace the Substring for Balanced String
+Minimum replacement to balance string
+Sliding window with frequency constraints
+
+1425. Constrained Subsequence Sum
+Max sum with jump constraint
+DP with sliding window maximum
+
+1574. Shortest Subarray to be Removed to Make Array Sorted
+Remove minimum elements to make sorted
+Two pointers with careful boundary handling
+
+2009. Minimum Number of Operations to Make Array Continuous
+Make array continuous with minimum changes
+Sliding window after sorting and deduplication
+
+2302. Count Subarrays With Score Less Than K
+Count subarrays where sum * length < k
+Sliding window with product constraint
