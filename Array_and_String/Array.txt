@@ -1,0 +1,197 @@
+ARRAY:
+> An array is a data structure that stores a collection of elements of same type in a contiguous block of memory.
+> Elements in an array are accessed using an index number, which is typically starts at 0.
+> Arrays are fundamental in programming for organizing and managing multiple values using a same variable name, like a list of car names or a list of student's test score.
+
+Points to remember:
+> collection of similar data.
+> contiguous memory.
+> index based access.
+> fixed or dynamic size.
+
+
+In Python, a list is a versatile, ordered, and mutable collection of items. Lists are a fundamental data structure used to store sequences of elements, which can be of various data types(integers, strings, floats, booleans or even other lists).
+
+Key Characteristics of Python List:
+> Ordered: Elements in a list maintain a defined order based on their insertion sequence. This order allows access to elements using numerical indices.
+> Mutable: Lists can be modified after creation. Elements can be added, removed, or changed.
+> Allows Duplicates: A list can contain multiple instances of the same element. 
+> Heterogeneous: Lists can store elements of different data types within the same list.
+> Dynamic: Lists can grow or shrink in size as elements are added or removed. 
+
+Creating Lists:
+> Lists are typically created using square brackets [] and separating elements with commas.
+
+# An empty list
+my_list = []
+
+# A list of numbers
+numbers = [1, 2, 3, 4, 5]
+
+# A list of strings
+fruits = ["apple", "banana", "cherry"]
+
+# A mixed-type list
+mixed_list = [1, "hello", True, 3.14]
+
+# A nested list
+nested_list = [[1, 2], [3, 4]]
+
+Accessing List Elements:
+Elements are accessed using zero-based indexing within square brackets.
+
+fruits = ["apple", "banana", "cherry"]
+print(fruits[0])  # Output: apple
+print(fruits[2])  # Output: cherry
+
+Modifying Lists:
+> Adding Elements:
+  - append(item): Adds an item to the end of the list.
+  - insert(index, item): Inserts an item at a specific index.
+  - extend(iterable): Appends all items from an iterable to the end of the list.
+
+> Removing Elements:
+  - remove(item): Removes the first occurrence of a specified item.
+  - pop(index): Removes and returns the item at a given index (or the last item if no index is provided).
+  - del list[index]: Deletes the item at a specific index.
+  - clear(): Removes all items from the list.
+
+> Changing Elements: Assign a new value to an element at a specific index.
+my_list = [1, 2, 3]
+my_list.append(4)  # my_list is now [1, 2, 3, 4]
+my_list[0] = 10    # my_list is now [10, 2, 3, 4]
+
+Common List Operations:
+> Slicing: Extracting a portion of a list.
+> Concatenation: Combining two lists using the + operator.
+> Iteration: Looping through list elements using for loops.
+> Sorting: Arranging elements in a specific order using sort() or sorted().
+> Reversing: Reversing the order of elements using reverse().
+> Membership Testing: Checking if an item exists in a list using the in operator
+
+
+====================================================================================
+
+Basic Level:
+Find the maximum element in an array.
+    Technique: Iteration through the array.
+
+Find the minimum element in an array.
+    Technique: Iteration through the array.
+
+Calculate the sum of all elements in an array.
+    Technique: Iteration through the array.
+
+Reverse an array.
+    Technique: Two-pointer approach or iterative swapping.
+
+Check if an array is sorted.
+    Technique: Iteration through the array.
+
+Remove duplicates from a sorted array.
+    Technique: Two-pointer approach.
+
+Rotate an array to the right by k steps.
+    Technique: Basic array manipulation.
+
+Implement an algorithm to find the "Kth" largest element in an array.
+    Technique: Sorting or use of max heap.
+
+Implement an algorithm to find the "Kth" smallest element in an array.
+    Technique: Sorting or use of min heap.
+
+Move all zeroes to the end of the array.
+    Technique: Two-pointer approach.
+
+Intermediate Level:
+Implement an algorithm to rotate an NxN matrix by 90 degrees.
+    Technique: Transpose and reverse or use of extra space.
+
+Implement an algorithm to find pairs in an array that sum up to a specific target.
+    Technique: Two-pointer approach or hash table.
+
+Implement an algorithm to perform a cyclic rotation in a given array.
+    Technique: Cyclic Sort.
+
+Find the "celebrity" in a party using a given array of people.
+    Technique: Two-pointer approach.
+
+Implement an algorithm to find the contiguous subarray with the largest sum (Kadane's algorithm).
+    Technique: Dynamic Programming.
+
+Implement an algorithm to merge two sorted arrays.
+    Technique: Merge Sort or Two-pointer approach.
+
+Implement an algorithm to search for an element in a rotated sorted array.
+    Technique: Modified Binary Search.
+
+Implement an algorithm to find the intersection of two arrays.
+    Technique: Hashing or Two-pointer approach.
+
+Implement an algorithm to find the majority element in an array.
+    Technique: Boyer-Moore Voting Algorithm.
+
+Implement an algorithm to find the longest increasing subsequence in an array.
+    Technique: Dynamic Programming.
+
+Advance Level:
+Implement an algorithm to find the first missing positive integer in an unsorted array.
+    Technique: Cyclic Sort.
+
+Implement an algorithm to sort an array of 0s, 1s, and 2s (Dutch National Flag problem).
+    Technique: Dutch National Flag algorithm or Two-pointer approach.
+
+Implement an algorithm to find the longest subarray with at most two distinct elements.
+    Technique: Sliding Window.
+
+Implement an algorithm to find the median of two sorted arrays.
+    Technique: Binary Search.
+
+Implement an algorithm to rotate an array to the right by k steps without using extra space.
+    Technique: Reverse the array in parts.
+
+Implement an algorithm to find the shortest subarray with a sum at least K.
+    Technique: Sliding Window.
+
+Implement an algorithm to find the equilibrium index of an array.
+    Technique: Prefix Sum.
+
+Implement an algorithm to find the peak element in an array.
+    Technique: Binary Search.
+
+Implement an algorithm to count the number of subarrays with a given sum.
+    Technique: Prefix Sum.
+
+Implement an algorithm to find the contiguous subarray with equal numbers of 0s and 1s.
+    Technique: Prefix Sum or Hashing.
+
+Expert Level:
+Implement an algorithm to efficiently find the maximum product of three numbers in an array.
+    Technique: Sorting or finding max/min elements.
+
+Implement an algorithm to find the length of the longest subarray with sum divisible by k.
+    Technique: Prefix Sum and Hashing.
+
+Implement an algorithm to find the minimum window in an array that contains all elements of another array.
+    Technique: Sliding Window.
+
+Implement an algorithm to find the longest increasing subarray with absolute difference less than or equal to a given number.
+    Technique: Sliding Window.
+
+Implement an algorithm to find the smallest subarray with sum greater than a given value.
+    Technique: Sliding Window.
+
+Implement an algorithm to find the minimum number of platforms needed for a set of train arrivals and departures.
+    Technique: Merge Intervals or Sorting.
+
+Implement an algorithm to find the maximum length subarray with sum less than or equal to a given sum.
+    Technique: Sliding Window.
+
+Implement an algorithm to find the subarray with the least average.
+    Technique: Sliding Window.
+
+Implement an algorithm to efficiently rotate an NxN matrix by 90 degrees in place.
+    Technique: Transpose and reverse.
+
+Implement an algorithm to find the longest subarray with at most K distinct elements.
+    Technique: Sliding Window or Hashing.
