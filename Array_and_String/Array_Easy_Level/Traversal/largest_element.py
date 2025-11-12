@@ -1,4 +1,3 @@
-
 # Problem: Find the Largest Element in an Array
 # LeetCode (or Custom): https://www.geeksforgeeks.org/problems/largest-element-in-array4009/1
 # Author: srinivas
