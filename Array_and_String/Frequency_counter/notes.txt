@@ -1,0 +1,162 @@
+Frequency Counter Pattern
+The Frequency Counter pattern uses hash maps (dictionaries in Python) to count the occurrences of elements in a collection. It's one of the most fundamental and powerful patterns in programming, especially for optimization.
+
+Core Concept
+Instead of using nested loops (O(n²) complexity), we build a frequency map in one pass (O(n) complexity) to track how many times each element appears.
+
+Basic Structure
+def frequency_counter(arr):
+    freq_map = {}
+    for item in arr:
+        freq_map[item] = freq_map.get(item, 0) + 1
+    return freq_map
+
+Common Techniques
+1. Using dict.get() method
+def count_frequencies(arr):
+    freq = {}
+    for num in arr:
+        freq[num] = freq.get(num, 0) + 1
+    return freq
+
+# Example
+arr = [1, 2, 2, 3, 3, 3]
+print(count_frequencies(arr))
+# Output: {1: 1, 2: 2, 3: 3}
+
+2. Using collections.Counter (Most Pythonic)
+from collections import Counter
+
+arr = [1, 2, 2, 3, 3, 3]
+freq = Counter(arr)
+print(freq)
+# Output: Counter({3: 3, 2: 2, 1: 1})
+
+# Counter has useful methods
+print(freq.most_common(2))  # [(3, 3), (2, 2)]
+
+3. Using defaultdict
+from collections import defaultdict
+
+def count_with_defaultdict(arr):
+    freq = defaultdict(int)  # Default value is 0
+    for num in arr:
+        freq[num] += 1  # No need to check if key exists
+    return dict(freq)
+
+arr = ['a', 'b', 'a', 'c', 'b', 'a']
+print(count_with_defaultdict(arr))
+# Output: {'a': 3, 'b': 2, 'c': 1}
+
+
+Real-World Problem Examples
+Example 1: Anagram Detection
+Problem: Check if two strings are anagrams.
+
+def are_anagrams(s1, s2):
+    if len(s1) != len(s2):
+        return False
+    
+    # Build frequency maps
+    freq1 = {}
+    freq2 = {}
+    
+    for char in s1:
+        freq1[char] = freq1.get(char, 0) + 1
+    
+    for char in s2:
+        freq2[char] = freq2.get(char, 0) + 1
+    
+    return freq1 == freq2
+
+# Test
+print(are_anagrams("listen", "silent"))  # True
+print(are_anagrams("hello", "world"))    # False
+
+# Using Counter (cleaner)
+from collections import Counter
+
+def are_anagrams_v2(s1, s2):
+    return Counter(s1) == Counter(s2)
+
+
+Example 2: Find First Non-Repeating Character
+def first_unique_char(s):
+    # Count frequencies
+    freq = {}
+    for char in s:
+        freq[char] = freq.get(char, 0) + 1
+    
+    # Find first with count 1
+    for char in s:
+        if freq[char] == 1:
+            return char
+    
+    return None
+
+print(first_unique_char("leetcode"))    # 'l'
+print(first_unique_char("loveleetcode")) # 'v'
+
+
+Example 3: Two Sum with Frequency Counter
+def two_sum(arr, target):
+    freq = {}
+    
+    for num in arr:
+        complement = target - num
+        
+        # Check if complement exists
+        if complement in freq and freq[complement] > 0:
+            return True
+        
+        freq[num] = freq.get(num, 0) + 1
+    
+    return False
+
+print(two_sum([1, 2, 3, 4, 5], 9))  # True (4 + 5)
+print(two_sum([1, 2, 3], 10))       # False
+
+Example 4: Valid Anagram with Different Lengths
+Problem: Check if array2 is squared version of array1.
+def is_squared_version(arr1, arr2):
+    if len(arr1) != len(arr2):
+        return False
+    
+    freq1 = Counter(arr1)
+    freq2 = Counter(arr2)
+    
+    for num in freq1:
+        # Check if squared version exists with same frequency
+        if num ** 2 not in freq2:
+            return False
+        if freq1[num] != freq2[num ** 2]:
+            return False
+    
+    return True
+
+print(is_squared_version([1, 2, 3], [1, 4, 9]))    # True
+print(is_squared_version([1, 2, 3], [1, 9]))       # False
+print(is_squared_version([1, 2, 1], [1, 4, 1]))    # True
+
+
+Key Advantages
+> Time Optimization: Reduces O(n²) to O(n)
+> Space Trade-off: Uses O(n) extra space
+> Cleaner Code: More readable than nested loops
+> Flexible: Works with any hashable type (strings, numbers, tuples)
+
+
+When to Use
+> Counting occurrences of elements
+> Comparing two collections
+> Finding duplicates or unique elements
+> Anagram problems
+> Character/element frequency analysis
+> Grouping similar items
+
+
+Performance
+> Time Complexity: O(n) for building the map
+> Space Complexity: O(k) where k is the number of unique elements
+> Much better than nested loops O(n²)
+
