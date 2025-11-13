@@ -25,8 +25,21 @@ class Solution:
         """
 
         # Optimized using Counter
+        # return Counter(s) == Counter(t)
 
-        return Counter(s) == Counter(t)
+        # more Optimized (one pass)
+        s_dict = dict()
+        for char in s:
+            s_dict[char] = s_dict.get(char, 0) + 1
+
+        for char in t:
+            if char not in s_dict:
+                return False
+            s_dict[char] -= 1
+            if s_dict[char] < 0:
+                return False
+
+        return True
 
 
 if __name__ == "__main__":
