@@ -1,8 +1,8 @@
-# Problem: 169. Majority Element
-# LeetCode: https://leetcode.com/problems/majority-element/
-# Author: srinivas
-# Date: 2025-11-13
-# Language: Python3
+# problem: 169. majority element
+# leetcode: https://leetcode.com/problems/majority-element/
+# author: srinivas
+# date: 2025-11-13
+# language: python3
 
 
 """

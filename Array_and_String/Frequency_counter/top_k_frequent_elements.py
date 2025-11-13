@@ -45,6 +45,7 @@ class Solution:
             freq[ele] += 1
         """
         # Optimized
+        """
         freq = Counter(nums)
         heap = []
         for num, count in freq.items():
@@ -53,6 +54,9 @@ class Solution:
                 heapq.heappop(heap)
 
         return [value for count, value in heap]
+        """
+        freq = Counter(nums)
+        return [idx for idx, count in freq.most_common(k)]
 
 # ----------------------------
 # ✅ Test Cases
