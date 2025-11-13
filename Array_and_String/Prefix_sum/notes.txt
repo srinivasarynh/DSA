@@ -1,0 +1,233 @@
+Prefix Sum
+
+What is Prefix Sum?
+Prefix Sum (also called cumulative sum) is a technique where you pre-compute the sum of elements from the start of an array up to each index. This allows you to calculate the sum of any subarray in O(1) constant time instead of O(n).
+
+Core Concept
+Given an array arr, the prefix sum array prefix is defined as:
+prefix[0] = arr[0]
+prefix[i] = arr[0] + arr[1] + ... + arr[i]
+
+Why Use It?
+Without prefix sum: To find sum of elements from index i to j, you'd need to loop through all elements → O(n) time
+With prefix sum: Use formula prefix[j] - prefix[i-1] → O(1) time
+This is especially powerful when you need to calculate multiple range sums!
+
+Example Walkthrough
+Let's say we have: arr = [3, 1, 4, 2, 5]
+Building the Prefix Sum Array:
+
+Index:        0   1   2   3   4
+Array:        3   1   4   2   5
+Prefix Sum:   3   4   8  10  15
+
+Calculation:
+prefix[0] = 3
+prefix[1] = 3 + 1 = 4
+prefix[2] = 3 + 1 + 4 = 8
+prefix[3] = 3 + 1 + 4 + 2 = 10
+prefix[4] = 3 + 1 + 4 + 2 + 5 = 15
+
+Using Prefix Sum to Find Range Sums:
+Query: Sum from index 1 to 3 (elements: 1, 4, 2)
+Sum = prefix[3] - prefix[0]
+    = 10 - 3
+    = 7  ✓ (1 + 4 + 2 = 7)
+
+Python Implementation Techniques
+Technique 1: Basic Prefix Sum Array
+def build_prefix_sum(arr):
+    n = len(arr)
+    prefix = [0] * n
+    prefix[0] = arr[0]
+    
+    for i in range(1, n):
+        prefix[i] = prefix[i-1] + arr[i]
+    
+    return prefix
+
+def range_sum(prefix, left, right):
+    """Calculate sum from index left to right (inclusive)"""
+    if left == 0:
+        return prefix[right]
+    return prefix[right] - prefix[left - 1]
+
+# Example usage
+arr = [3, 1, 4, 2, 5]
+prefix = build_prefix_sum(arr)
+print(f"Prefix sum array: {prefix}")  # [3, 4, 8, 10, 15]
+print(f"Sum from index 1 to 3: {range_sum(prefix, 1, 3)}")  # 7
+
+
+Technique 2: Prefix Sum with Extra Space (Easier Edge Cases)
+Adding a dummy 0 at the beginning makes calculations simpler:
+def build_prefix_sum_v2(arr):
+    n = len(arr)
+    prefix = [0] * (n + 1)  # Extra space at index 0
+    
+    for i in range(n):
+        prefix[i + 1] = prefix[i] + arr[i]
+    
+    return prefix
+
+def range_sum_v2(prefix, left, right):
+    """No need to handle left == 0 separately"""
+    return prefix[right + 1] - prefix[left]
+
+# Example usage
+arr = [3, 1, 4, 2, 5]
+prefix = build_prefix_sum_v2(arr)
+print(f"Prefix sum array: {prefix}")  # [0, 3, 4, 8, 10, 15]
+print(f"Sum from index 1 to 3: {range_sum_v2(prefix, 1, 3)}")  # 7
+
+
+Technique 3: Using Python's itertools.accumulate
+from itertools import accumulate
+
+arr = [3, 1, 4, 2, 5]
+prefix = list(accumulate(arr))
+print(f"Prefix sum: {prefix}")  # [3, 4, 8, 10, 15]
+
+Common Use Cases
+> Range Sum Queries: Answer multiple queries about subarray sums
+> Running Averages: Calculate moving averages efficiently
+> Subarray Problems: Find subarrays with specific sum properties
+> Difference Arrays: When combined with difference arrays for range updates
+> Image Processing: Computing sums over rectangular regions
+
+Practice Problem Example
+Problem: Find number of subarrays with sum equal to k
+def subarray_sum_equals_k(arr, k):
+    """Count subarrays with sum = k using prefix sum + hashmap"""
+    count = 0
+    prefix_sum = 0
+    sum_freq = {0: 1}  # Initialize with 0 sum seen once
+    
+    for num in arr:
+        prefix_sum += num
+        
+        # If (prefix_sum - k) exists, we found subarrays
+        if prefix_sum - k in sum_freq:
+            count += sum_freq[prefix_sum - k]
+        
+        # Record current prefix sum
+        sum_freq[prefix_sum] = sum_freq.get(prefix_sum, 0) + 1
+    
+    return count
+
+# Example
+arr = [1, 2, 3, 4, 5]
+k = 5
+print(f"Subarrays with sum {k}: {subarray_sum_equals_k(arr, k)}")  # 2: [2,3] and [5]
+
+Time & Space Complexity
+> Building prefix sum: O(n) time, O(n) space
+> Range query after building: O(1) time
+> Total for m queries: O(n + m) instead of O(n × m)
+
+LeetCode Prefix Sum Problems - Complete List
+📚 Easy/Warm-up Problems
+
+1480. Running Sum of 1D Array
+1732. Find the Highest Altitude
+724. Find Pivot Index / Find the Middle Index in Array
+303. Range Sum Query - Immutable
+
+🔵 Medium - Core Prefix Sum Problems
+Basic Prefix Sum
+
+238. Product of Array Except Self
+1991. Find the Middle Index in Array
+1893. Check if All the Integers in a Range Are Covered
+2270. Number of Ways to Split Array
+
+Prefix Sum + HashMap (Most Important Category)
+
+560. Subarray Sum Equals K ⭐
+523. Continuous Subarray Sum ⭐
+525. Contiguous Array ⭐
+974. Subarray Sums Divisible by K ⭐
+325. Maximum Size Subarray Sum Equals K (Premium)
+930. Binary Subarrays with Sum
+1248. Count Number of Nice Subarrays
+1371. Find the Longest Substring Containing Vowels in Even Counts
+
+Prefix Sum with Difference Array
+
+1109. Corporate Flight Bookings
+370. Range Addition (Premium)
+1094. Car Pooling
+
+Prefix Sum + Greedy/DP
+
+1171. Remove Zero Sum Consecutive Nodes from Linked List
+1590. Make Sum Divisible by P
+1524. Number of Sub-arrays with Odd Sum
+
+🔴 Hard - Advanced Prefix Sum Problems
+2D Prefix Sum
+
+304. Range Sum Query 2D - Immutable
+1314. Matrix Block Sum
+1277. Count Square Submatrices with All Ones
+1727. Largest Submatrix With Rearrangements
+
+Prefix Sum + Advanced Techniques
+
+363. Max Sum of Rectangle No Larger Than K ⭐
+1074. Number of Submatrices That Sum to Target ⭐
+689. Maximum Sum of 3 Non-Overlapping Subarrays ⭐
+862. Shortest Subarray with Sum at Least K
+1622. Fancy Sequence
+
+Tree/Graph with Prefix Sum
+
+437. Path Sum III ⭐
+1442. Count Triplets That Can Form Two Arrays of Equal XOR
+
+
+
+🏆 Problem Categories by Technique
+Pattern 1: Basic Prefix Sum Array
+Problems: 1480, 1732, 303, 724, 238
+
+Pattern 2: Prefix Sum + HashMap (Target Sum)
+Problems: 560, 325, 523, 525, 974, 930, 1248
+Key Insight: Use prefix_sum - target lookup in hashmap
+
+Pattern 3: 2D Prefix Sum (Matrix)
+Problems: 304, 1314, 1074, 363
+Key Insight: prefix[i][j] = prefix[i-1][j] + prefix[i][j-1] - prefix[i-1][j-1] + matrix[i][j]
+
+Pattern 4: Prefix Sum on Trees
+Problems: 437
+Key Insight: Track prefix sums along root-to-node paths
+
+Pattern 5: Difference Array (Range Updates)
+Problems: 1109, 370, 1094
+Key Insight: Mark start (+val) and end+1 (-val), then compute prefix sum
+
+
+Practice Strategy
+Beginner Path:
+Start with: 1480 → 303 → 724
+Then try: 560 → 525 → 974
+
+Intermediate Path:
+Master hashmap pattern: 523 → 930 → 1248
+Learn 2D prefix: 304 → 1314 → 1074
+
+Advanced Path:
+Hard problems: 363 → 689 → 437
+Variations: 862 → 1622
+
+
+Key Concepts to Master
+> Basic Prefix Sum: O(1) range queries
+> Prefix Sum + HashMap: Find subarrays with target sum/properties
+> 2D Prefix Sum: Rectangle sum queries
+> Difference Array: Efficient range updates
+> Modulo Arithmetic: Divisibility problems
+> XOR Prefix: For XOR-based problems
+
+Pro Tip: Problems 560, 525, 974, 523, and 437 are the most important interview questions in this category! Master these first. 🎯
