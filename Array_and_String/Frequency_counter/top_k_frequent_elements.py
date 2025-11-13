@@ -47,12 +47,12 @@ class Solution:
         # Optimized
         freq = Counter(nums)
         heap = []
-        for key, value in freq.items():
-            heapq.heappush(heap, (key, value))
+        for num, count in freq.items():
+            heapq.heappush(heap, (count, num))
             if len(heap) > k:
                 heapq.heappop(heap)
 
-        return [count for count, value in heap]
+        return [value for count, value in heap]
 
 # ----------------------------
 # ✅ Test Cases
