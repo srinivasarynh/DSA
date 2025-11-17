@@ -1,0 +1,109 @@
+Sliding Window (Fixed Size) Pattern
+Core Concept
+The Fixed-Size Sliding Window is a technique where you maintain a window of constant size k that "slides" through an array or string from left to right. Instead of recalculating everything for each position, you:
+
+> Initialize the window with the first k elements
+> Slide by removing the leftmost element and adding the next element
+> Update your result based on the current window
+> Time Complexity: O(n) instead of O(n*k) for naive approaches
+
+Template Pattern
+def sliding_window_fixed(arr, k):
+    # 1. Initialize window for first k elements
+    window_sum = sum(arr[:k])
+    result = window_sum
+    
+    # 2. Slide the window
+    for i in range(k, len(arr)):
+        # Remove leftmost element, add rightmost element
+        window_sum = window_sum - arr[i - k] + arr[i]
+        # Update result
+        result = max(result, window_sum)
+    
+    return result
+
+
+Key Takeaways
+> When to use: Problems with "consecutive k elements", "subarray of size k", "within k distance"
+> Efficiency: O(n) vs O(n*k) naive approach
+> Common operations:
+  - Sum: window_sum = window_sum - left + right
+  - Set/Hash: Track unique elements or frequency
+  - Deque: Maintain min/max in window
+> Edge cases: k > len(array), k = 1, empty arrays
+
+Practice Roadmap
+Week 1: Master Easy (Build Foundation)
+Start with: 643, 219, 1456
+Practice: 1052, 2379, 1876
+Complete all 13 easy problems
+
+Week 2: Core Medium Patterns
+Sum/Average:
+1343, 2461, 1423
+Hash/Frequency:
+567, 438, 1100
+Deque basics:
+1438
+
+Week 3: Advanced Medium
+String patterns:
+1358, 1248, 1208
+Circular/Special:
+2134, 1151, 1004
+Complex counting:
+2302, 2799, 2958
+
+Week 4: Hard Problems
+Must-solve classics:
+239 (Sliding Window Maximum)
+480 (Sliding Window Median)
+76 (Minimum Window Substring)
+30 (Concatenation of All Words)
+
+Advanced:
+995, 1610, 632
+
+Key Problem Categories
+By Data Structure:
+Array sum/avg: 643, 1343, 2461, 1423
+Hash/Set: 219, 567, 438, 1100, 2461
+Deque (min/max): 239, 1438, 1425, 1696
+Two heaps: 480
+Multiple structures: 30, 632
+
+By Technique:
+Basic sliding: 643, 1456, 1343
+Lazy deletion: 480, 239 (cleanup)
+Transform problem: 1423 (reverse thinking), 2134 (circular)
+Greedy + window: 995, 2009
+2D extension: 1074
+
+By Difficulty Curve:
+Warmup: 643 → 1456 → 219
+Pattern recognition: 1343 → 567 → 438
+Deque introduction: 1438 → 239
+Advanced structures: 480
+Combination skills: 30 → 995
+
+
+Problem-Solving Tips
+Recognition Checklist:
+✅ "Subarray/substring of size k"
+✅ "Consecutive k elements"
+✅ "Within k distance"
+✅ "Every window of size k"
+✅ "At most k differences/flips/operations"
+Common Mistakes:
+❌ Forgetting to handle k > array length
+❌ Off-by-one errors in window boundaries
+❌ Not maintaining invariants when sliding
+❌ Inefficient window updates (recalculating everything)
+❌ Incorrect lazy deletion in heap problems
+
+Optimization Techniques:
+> Preprocessing: Sort, prefix sums, hash maps
+> Lazy updates: Mark for deletion instead of immediate removal
+> Invariant maintenance: Keep data structure properties while sliding
+> Early termination: Stop when impossible to improve result
+

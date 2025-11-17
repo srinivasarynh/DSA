@@ -1,0 +1,211 @@
+Sliding Window (Variable Size)
+
+Core Concept
+The variable-size sliding window is a technique where the window size dynamically expands and contracts based on certain conditions. Unlike fixed-size windows, you don't know the window size beforehand—it adjusts as you iterate through the array/string.
+
+Key Idea: Use two pointers (left and right) where:
+> Right pointer expands the window by moving forward
+> Left pointer contracts the window when a condition is violated
+> Track the answer as you go
+
+When to Use This Pattern
+Use variable-size sliding window when:
+> You need to find the longest/shortest subarray/substring meeting a condition
+> The problem involves contiguous elements
+> You need to optimize from O(n²) brute force to O(n)
+> Conditions involve sums, character frequencies, or counts
+
+Template Structure
+def sliding_window_variable(arr):
+    left = 0
+    window_state = {}  # Track window properties
+    result = 0  # Initialize result
+    
+    for right in range(len(arr)):
+        # 1. Add arr[right] to window
+        # Update window_state
+        
+        # 2. While window is invalid, shrink from left
+        while condition_violated:
+            # Remove arr[left] from window
+            # Update window_state
+            left += 1
+        
+        # 3. Update result (window is valid here)
+        result = max(result, right - left + 1)
+    
+    return result
+
+Techniques & Patterns
+1. Character Frequency Pattern
+Track character counts using a hash map.
+Example: Longest substring with at most K distinct characters
+def lengthOfLongestSubstringKDistinct(s, k):
+    left = 0
+    char_count = {}
+    max_len = 0
+    
+    for right in range(len(s)):
+        # Expand: add right character
+        char_count[s[right]] = char_count.get(s[right], 0) + 1
+        
+        # Contract: while we have more than k distinct chars
+        while len(char_count) > k:
+            char_count[s[left]] -= 1
+            if char_count[s[left]] == 0:
+                del char_count[s[left]]
+            left += 1
+        
+        # Update result
+        max_len = max(max_len, right - left + 1)
+    
+    return max_len
+
+
+2. Sum-Based Pattern
+Track cumulative sum within window.
+Example: Minimum size subarray with sum ≥ target
+def minSubArrayLen(target, nums):
+    left = 0
+    current_sum = 0
+    min_len = float('inf')
+    
+    for right in range(len(nums)):
+        # Expand: add right element
+        current_sum += nums[right]
+        
+        # Contract: while sum is valid, try to minimize
+        while current_sum >= target:
+            min_len = min(min_len, right - left + 1)
+            current_sum -= nums[left]
+            left += 1
+    
+    return min_len if min_len != float('inf') else 0
+
+
+3. Condition Counter Pattern
+Use a counter to track how many conditions are satisfied.
+Example: Longest substring with at most 2 distinct characters
+def lengthOfLongestSubstringTwoDistinct(s):
+    left = 0
+    char_map = {}
+    max_len = 0
+    
+    for right in range(len(s)):
+        char_map[s[right]] = right  # Store rightmost index
+        
+        # Contract: when we have more than 2 distinct
+        if len(char_map) > 2:
+            # Remove leftmost character
+            leftmost_index = min(char_map.values())
+            del char_map[s[leftmost_index]]
+            left = leftmost_index + 1
+        
+        max_len = max(max_len, right - left + 1)
+    
+    return max_len
+
+
+
+Key Strategies
+Strategy 1: Maintain Validity
+Always ensure the window maintains the required condition before updating the result.
+Strategy 2: Greedy Contraction
+Contract the window as much as possible while maintaining validity to find minimum lengths.
+Strategy 3: State Tracking
+Use hash maps, sets, or counters to efficiently track window properties.
+Strategy 4: Two-Phase Updates
+Phase 1: Expand window (add right element)
+Phase 2: Contract window (remove left elements while invalid)
+Phase 3: Record result
+
+Complete Example with Explanation
+Problem: Longest Substring Without Repeating Characters
+def lengthOfLongestSubstring(s):
+    left = 0
+    char_set = set()
+    max_length = 0
+    
+    for right in range(len(s)):
+        # Try to add s[right] to window
+        # If it creates a duplicate, shrink from left
+        while s[right] in char_set:
+            char_set.remove(s[left])
+            left += 1
+        
+        # Now window [left, right] has no duplicates
+        char_set.add(s[right])
+        max_length = max(max_length, right - left + 1)
+    
+    return max_length
+
+# Trace for "abcabcbb":
+# right=0: window="a", max=1
+# right=1: window="ab", max=2
+# right=2: window="abc", max=3
+# right=3: window="abc" (remove 'a'), then "bca", max=3
+# right=4: window="bca" (remove 'b'), then "cab", max=3
+# ...continues...
+
+
+LeetCode Problems (Easy to Hard)
+Easy
+643 - Maximum Average Subarray I
+1456 - Maximum Number of Vowels in a Substring of Given Length
+1876 - Substrings of Size Three with Distinct Characters
+
+Medium
+3 - Longest Substring Without Repeating Characters ⭐
+209 - Minimum Size Subarray Sum ⭐
+424 - Longest Repeating Character Replacement ⭐
+713 - Subarray Product Less Than K
+904 - Fruit Into Baskets
+930 - Binary Subarrays With Sum
+992 - Subarrays with K Different Integers
+1004 - Max Consecutive Ones III ⭐
+1208 - Get Equal Substrings Within Budget
+1248 - Count Number of Nice Subarrays
+1358 - Number of Substrings Containing All Three Characters
+1423 - Maximum Points You Can Obtain from Cards
+1438 - Longest Continuous Subarray With Absolute Diff Less Than or Equal to Limit
+1493 - Longest Subarray of 1's After Deleting One Element
+1658 - Minimum Operations to Reduce X to Zero
+2024 - Maximize the Confusion of an Exam
+2090 - K Radius Subarray Averages
+2134 - Minimum Swaps to Group All 1's Together II
+2379 - Minimum Recolors to Get K Consecutive Black Blocks
+2461 - Maximum Sum of Distinct Subarrays With Length K
+
+Hard
+76 - Minimum Window Substring ⭐⭐⭐
+239 - Sliding Window Maximum (uses deque)
+340 - Longest Substring with At Most K Distinct Characters
+395 - Longest Substring with At Least K Repeating Characters
+567 - Permutation in String
+632 - Smallest Range Covering Elements from K Lists
+727 - Minimum Window Subsequence
+862 - Shortest Subarray with Sum at Least K (uses deque)
+1074 - Number of Submatrices That Sum to Target
+1234 - Replace the Substring for Balanced String
+2398 - Maximum Number of Robots Within Budget
+
+Must-Practice Problems (⭐ marked above)
+Start with these 5 to master the pattern:
+Problem 3 - Classic intro to variable window
+Problem 209 - Sum-based window
+Problem 424 - Character replacement pattern
+Problem 76 - Most challenging, tests complete understanding
+Problem 1004 - Flip at most K zeros pattern
+
+Common Mistakes to Avoid
+Forgetting to update window state when contracting
+Updating result inside the while loop (usually should be outside)
+Not handling edge cases (empty array, k=0, etc.)
+Incorrect while condition - ensure it represents "invalid state"
+Off-by-one errors in window size calculation (use right - left + 1)
+
+Time Complexity
+O(n) - Each element is visited at most twice (once by right, once by left)
+Space: O(k) where k is the size of the tracking data structure
+
+This pattern is one of the most powerful optimization techniques in competitive programming!
