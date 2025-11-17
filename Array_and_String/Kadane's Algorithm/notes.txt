@@ -1,0 +1,208 @@
+Kadane's Algorithm - Maximum Subarray Sum
+
+Core Concept
+Kadane's Algorithm is a dynamic programming technique that finds the maximum sum of a contiguous subarray in O(n) time and O(1) space. The key insight is: at each position, we decide whether to extend the current subarray or start a new one.
+The Big Idea
+At each element, the maximum subarray ending at that position is either:
+> The element itself (start fresh)
+> The element + the maximum subarray ending at the previous position (extend)
+
+Formula: current_max = max(nums[i], current_max + nums[i])
+
+Basic Implementation
+def max_subarray_sum(nums):
+    """
+    Find maximum sum of contiguous subarray
+    Time: O(n), Space: O(1)
+    """
+    if not nums:
+        return 0
+    
+    max_sum = nums[0]  # Global maximum
+    current_sum = nums[0]  # Maximum ending at current position
+    
+    for i in range(1, len(nums)):
+        # Decide: extend current subarray or start new one
+        current_sum = max(nums[i], current_sum + nums[i])
+        max_sum = max(max_sum, current_sum)
+    
+    return max_sum
+
+# Example
+nums = [-2, 1, -3, 4, -1, 2, 1, -5, 4]
+print(max_subarray_sum(nums))  # Output: 6 (subarray [4,-1,2,1])
+```
+
+### Step-by-Step Walkthrough
+```
+Array: [-2, 1, -3, 4, -1, 2, 1, -5, 4]
+
+i=0: current_sum = -2, max_sum = -2
+i=1: current_sum = max(1, -2+1) = 1, max_sum = 1
+i=2: current_sum = max(-3, 1-3) = -2, max_sum = 1
+i=3: current_sum = max(4, -2+4) = 4, max_sum = 4
+i=4: current_sum = max(-1, 4-1) = 3, max_sum = 4
+i=5: current_sum = max(2, 3+2) = 5, max_sum = 5
+i=6: current_sum = max(1, 5+1) = 6, max_sum = 6
+i=7: current_sum = max(-5, 6-5) = 1, max_sum = 6
+i=8: current_sum = max(4, 1+4) = 5, max_sum = 6
+
+Advanced Techniques & Variations
+1. Return the Actual Subarray
+def max_subarray_with_indices(nums):
+    max_sum = float('-inf')
+    current_sum = 0
+    start = end = temp_start = 0
+    
+    for i in range(len(nums)):
+        if current_sum < 0:
+            current_sum = 0
+            temp_start = i
+        
+        current_sum += nums[i]
+        
+        if current_sum > max_sum:
+            max_sum = current_sum
+            start = temp_start
+            end = i
+    
+    return max_sum, nums[start:end+1]
+
+# Example
+nums = [-2, 1, -3, 4, -1, 2, 1, -5, 4]
+sum_val, subarray = max_subarray_with_indices(nums)
+print(f"Sum: {sum_val}, Subarray: {subarray}")  # Sum: 6, Subarray: [4, -1, 2, 1]
+
+
+2. Circular Array (Maximum Subarray in Circular Array)
+def max_circular_subarray(nums):
+    """
+    Maximum subarray sum in circular array
+    Two cases: 1) Normal Kadane, 2) Max = Total - Min subarray
+    """
+    def kadane(arr):
+        max_sum = curr = arr[0]
+        for num in arr[1:]:
+            curr = max(num, curr + num)
+            max_sum = max(max_sum, curr)
+        return max_sum
+    
+    # Case 1: Normal maximum subarray
+    max_kadane = kadane(nums)
+    
+    # Case 2: Maximum wrap around = Total - Minimum subarray
+    total_sum = sum(nums)
+    max_wrap = total_sum - kadane([-num for num in nums])
+    
+    # Edge case: all negative numbers
+    if max_wrap == 0:
+        return max_kadane
+    
+    return max(max_kadane, max_wrap)
+
+# Example
+print(max_circular_subarray([5, -3, 5]))  # 10 (5 + 5 wrapping around)
+
+3. Maximum Sum with At Most K Elements
+def max_sum_k_elements(nums, k):
+    """Find max sum of subarray with at most k elements"""
+    max_sum = float('-inf')
+    current_sum = 0
+    
+    for i in range(len(nums)):
+        current_sum += nums[i]
+        
+        # Keep window size <= k
+        if i >= k:
+            current_sum -= nums[i - k]
+        
+        if i >= k - 1:
+            max_sum = max(max_sum, current_sum)
+    
+    return max_sum
+
+
+4. Print All Maximum Subarrays
+def all_max_subarrays(nums):
+    """Find all subarrays with maximum sum"""
+    max_sum = max(nums)  # Handle all negative case
+    current_sum = 0
+    result = []
+    temp = []
+    
+    for num in nums:
+        if current_sum <= 0:
+            current_sum = 0
+            temp = []
+        
+        current_sum += num
+        temp.append(num)
+        
+        if current_sum == max_sum:
+            result.append(temp[:])
+        elif current_sum > max_sum:
+            max_sum = current_sum
+            result = [temp[:]]
+    
+    return result
+
+
+Key Patterns & Techniques
+Pattern 1: Standard Kadane
+  - Track current_sum and max_sum
+  - Reset when sum becomes negative
+
+Pattern 2: Modified Kadane (Keep All Values)
+  - Don't reset to 0, use max(num, current + num)
+  - Better for mixed positive/negative arrays
+
+Pattern 3: Two-Pass Kadane
+  - Run Kadane left-to-right and right-to-left
+  - Useful for problems needing prefix/suffix information
+
+Pattern 4: Kadane with Constraints
+  - Add conditions (length, element count, etc.)
+  - Use sliding window techniques alongside
+
+
+LeetCode Problems (Easy → Hard)
+Easy
+53. Maximum Subarray - Classic Kadane's algorithm
+121. Best Time to Buy and Sell Stock - Kadane variant (find max difference)
+1646. Get Maximum in Generated Array - Build array then apply Kadane
+
+Medium
+152. Maximum Product Subarray - Track both max and min products
+918. Maximum Sum Circular Subarray - Kadane on circular array
+1423. Maximum Points You Can Obtain from Cards - Kadane with sliding window
+978. Longest Turbulent Subarray - Modified Kadane for patterns
+1186. Maximum Subarray Sum with One Deletion - Kadane with skip option
+1749. Maximum Absolute Sum of Any Subarray - Apply Kadane twice (max and min)
+2321. Maximum Score Of Spliced Array - Kadane to find best swap segment
+1031. Maximum Sum of Two Non-Overlapping Subarrays - Two-pass Kadane
+363. Max Sum of Rectangle No Larger Than K - 2D Kadane with binary search
+1074. Number of Submatrices That Sum to Target - 2D Kadane with hash map
+
+Hard
+2272. Substring With Largest Variance - Generalized Kadane (character frequency)
+1960. Maximum Product of the Length of Two Palindromic Substrings - Manacher + Kadane concepts
+891. Sum of Subsequence Widths - Math + sorting (Kadane thinking)
+2302. Count Subarrays With Score Less Than K - Kadane with binary search
+
+
+Pro Tips
+> When to use Kadane: Problems asking for "maximum/minimum sum of contiguous elements"
+> Space optimization: You only need two variables (current_sum, max_sum), not an array
+> Handle edge cases:
+  - All negative numbers
+  - Empty array
+  - Single element
+> Variations to recognize:
+  - Product instead of sum → track both max/min
+  - Circular array → run twice (normal + wrapped)
+  - 2D array → compress to 1D and apply Kadane
+> Common mistakes:
+  - Forgetting to update max_sum before resetting current_sum
+  - Not initializing with first element (causes issues with all-negative arrays)
+
+The beauty of Kadane's algorithm is its simplicity and O(n) efficiency—master this pattern and you'll recognize it everywhere!
