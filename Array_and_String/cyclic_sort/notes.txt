@@ -1,0 +1,209 @@
+Cyclic Sort Pattern
+Core Concept
+Cyclic Sort is a powerful pattern for solving problems involving arrays containing numbers in a given range. The key insight is that if we have an array of n elements with values in the range [1, n] or [0, n-1], we can place each number at its correct index in O(n) time and O(1) space.
+
+The Fundamental Idea
+If you have numbers from 1 to n, number k should ideally be at index k-1:
+  - Number 1 → index 0
+  - Number 2 → index 1
+  - Number k → index k-1
+
+How Cyclic Sort Works
+Initial array: [3, 1, 5, 4, 2]
+Target:        [1, 2, 3, 4, 5]
+
+Step by step:
+i=0: nums[0]=3, should be at index 2 → swap(0,2) → [5, 1, 3, 4, 2]
+i=0: nums[0]=5, should be at index 4 → swap(0,4) → [2, 1, 3, 4, 5]
+i=0: nums[0]=2, should be at index 1 → swap(0,1) → [1, 2, 3, 4, 5]
+i=0: nums[0]=1, correct position → move to i=1
+i=1: nums[1]=2, correct position → move to i=2
+... continue until end
+
+Basic Implementation
+def cyclic_sort(nums):
+    i = 0
+    while i < len(nums):
+        correct_index = nums[i] - 1  # For 1 to n range
+        
+        # If current number is not at its correct position
+        if nums[i] != nums[correct_index]:
+            # Swap it to its correct position
+            nums[i], nums[correct_index] = nums[correct_index], nums[i]
+        else:
+            # Move to next element
+            i += 1
+    return nums
+
+Time Complexity: O(n) - each element is moved at most once to its correct position
+Space Complexity: O(1) - in-place sorting
+
+Problem-Solving Techniques
+Technique 1: Finding Missing Numbers
+When some numbers are missing or duplicated, after cyclic sort, the missing numbers will have incorrect values at their indices.
+
+Example: Find Missing Number
+def find_missing_number(nums):  # Array of n numbers from 0 to n
+    i = 0
+    n = len(nums)
+    
+    # Cyclic sort
+    while i < n:
+        correct_index = nums[i]
+        # For range [0, n], check bounds and position
+        if nums[i] < n and nums[i] != nums[correct_index]:
+            nums[i], nums[correct_index] = nums[correct_index], nums[i]
+        else:
+            i += 1
+    
+    # Find the missing number
+    for i in range(n):
+        if nums[i] != i:
+            return i
+    
+    return n  # If all present, missing number is n
+
+# Example
+nums = [3, 0, 1]  # Missing 2
+# After sort: [0, 1, 3]
+# nums[2] != 2, so return 2
+
+
+Technique 2: Finding Duplicates
+After sorting, duplicates will prevent some numbers from being in their correct positions.
+Example: Find Duplicate Number
+def find_duplicate(nums):  # n+1 numbers in range [1, n]
+    i = 0
+    
+    while i < len(nums):
+        correct_index = nums[i] - 1
+        
+        if nums[i] != nums[correct_index]:
+            nums[i], nums[correct_index] = nums[correct_index], nums[i]
+        else:
+            i += 1
+    
+    # The duplicate will be at index n
+    for i in range(len(nums)):
+        if nums[i] != i + 1:
+            return nums[i]
+
+# Example
+nums = [1, 3, 4, 2, 2]
+# After attempts: [1, 2, 3, 4, 2]
+# nums[4] = 2, but should be 5, so 2 is duplicate
+
+
+Technique 3: Finding All Missing/Duplicate Numbers
+Combine both techniques to find multiple anomalies.
+Example: Find All Missing Numbers
+def find_all_missing(nums):  # n numbers from 1 to n
+    i = 0
+    
+    # Cyclic sort
+    while i < len(nums):
+        correct_index = nums[i] - 1
+        if nums[i] != nums[correct_index]:
+            nums[i], nums[correct_index] = nums[correct_index], nums[i]
+        else:
+            i += 1
+    
+    # Collect all missing numbers
+    missing = []
+    for i in range(len(nums)):
+        if nums[i] != i + 1:
+            missing.append(i + 1)
+    
+    return missing
+
+# Example
+nums = [4, 3, 2, 7, 8, 2, 3, 1]  # Missing 5, 6
+# After sort: [1, 2, 3, 4, 3, 2, 7, 8]
+# Indices 4 and 5 have wrong values → missing 5 and 6
+
+Key Recognition Patterns
+Use Cyclic Sort when you see:
+> Range constraint: Numbers are in range [1, n], [0, n-1], or [0, n]
+> Array size relationship: Array has n or n±1 elements
+> Finding missing/duplicate: Problem asks to find missing, duplicate, or smallest missing positive
+> Linear time requirement: Need O(n) time without extra space
+> Keywords: "missing", "duplicate", "first positive", "disappeared numbers"
+
+Common Variations
+> Variation 1: Range [0, n-1]
+correct_index = nums[i]  # Number itself is the index
+
+> Variation 2: Range [1, n]
+correct_index = nums[i] - 1  # Subtract 1 to get index
+
+> Variation 3: Handling Duplicates
+# Skip when same value at correct position
+if nums[i] != nums[correct_index]:
+    swap()
+
+> Variation 4: Out-of-Range Values
+# Ignore values outside the valid range
+if 0 <= nums[i] < n and nums[i] != nums[correct_index]:
+    swap()
+
+LeetCode Problems (Easy to Hard)
+Easy
+268. Missing Number - Find the missing number in range [0, n]
+448. Find All Numbers Disappeared in an Array - Find all missing numbers from 1 to n
+1365. How Many Numbers Are Smaller Than the Current Number - Can use cyclic sort approach
+
+Medium
+287. Find the Duplicate Number - Find duplicate in array of n+1 integers (range 1 to n)
+442. Find All Duplicates in an Array - Find all numbers appearing twice
+645. Set Mismatch - Find duplicate and missing number
+41. First Missing Positive - Find smallest missing positive integer (★ Classic)
+565. Array Nesting - Find longest consecutive path
+2617. Minimum Number of Visited Cells in a Grid - Uses cyclic sort concepts
+
+Hard
+41. First Missing Positive - Often categorized as hard due to constraints
+765. Couples Holding Hands - Cyclic permutation problem
+2471. Minimum Number of Operations to Sort a Binary Tree by Level - Uses cycle detection
+
+Detailed Example: First Missing Positive (LC 41)
+This is the most important cyclic sort problem:
+def firstMissingPositive(nums):
+    """
+    Find smallest missing positive integer
+    Array may contain negatives, zeros, and numbers > n
+    """
+    n = len(nums)
+    i = 0
+    
+    # Cyclic sort - only sort positive numbers in range [1, n]
+    while i < n:
+        correct_index = nums[i] - 1
+        
+        # Only swap if:
+        # 1. Number is in valid range [1, n]
+        # 2. It's not already in correct position
+        # 3. Target position doesn't have same number (avoid infinite loop)
+        if 1 <= nums[i] <= n and nums[i] != nums[correct_index]:
+            nums[i], nums[correct_index] = nums[correct_index], nums[i]
+        else:
+            i += 1
+    
+    # Find first position where number is incorrect
+    for i in range(n):
+        if nums[i] != i + 1:
+            return i + 1
+    
+    # All positions correct, missing number is n+1
+    return n + 1
+
+# Examples
+print(firstMissingPositive([1, 2, 0]))          # Output: 3
+print(firstMissingPositive([3, 4, -1, 1]))      # Output: 2
+print(firstMissingPositive([7, 8, 9, 11, 12]))  # Output: 1
+
+Practice Strategy
+> Start with Easy: Master problems 268 and 448 to understand the basic pattern
+> Move to Medium: Focus on problem 41 (First Missing Positive) - it's the gold standard
+> Understand Variations: Study how to handle duplicates (442), missing+duplicate pairs (645)
+> Optimize: Practice writing the pattern without extra space and in O(n) time
+> Edge Cases: Always consider: empty arrays, all duplicates, no missing/duplicates, extreme ranges
