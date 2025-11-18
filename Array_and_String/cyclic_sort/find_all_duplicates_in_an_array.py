@@ -1,34 +1,35 @@
-# Problem: 448. find all numbers disappeared in an array
-# LeetCode: https://leetcode.com/problems/find-all-numbers-disappeared-in-an-array/description/
+# Problem: 442. Find all duplicates in an array
+# LeetCode: https://leetcode.com/problems/find-all-duplicates-in-an-array/description/
 # Author: srinivas
 # Date: 2025-11-18
 # Language: Python3
 
 
+# LeetCode 442: Find All Duplicates in an Array
+# Python3 template with test cases
+
 class Solution:
-    def findDisappearedNumbers(self, nums):
+    def findDuplicates(self, nums):
         """
         :type nums: List[int]
         :rtype: List[int]
         """
-        n = len(nums)
         i = 0
+        n = len(nums)
         missing = []
 
         while (i < n):
             correct_index = nums[i]-1
-
-            if nums[i] < n and nums[i] != nums[correct_index]:
+            if nums[i] != nums[correct_index]:
                 nums[i], nums[correct_index] = nums[correct_index], nums[i]
             else:
                 i += 1
 
         for i in range(n):
             if nums[i] != i+1:
-                missing.append(i+1)
+                missing.append(nums[i])
 
         return missing
-
 # --------------------------
 # Test Cases
 # --------------------------
@@ -39,22 +40,20 @@ def run_tests():
 
     tests = [
         # (input, expected_output)
-        ([4, 3, 2, 7, 8, 2, 3, 1], [5, 6]),
-        ([1, 1], [2]),
-        ([2, 2], [1]),
+        ([4, 3, 2, 7, 8, 2, 3, 1], [2, 3]),
+        ([1, 1, 2], [1]),
+        ([1, 2, 3], []),
+        ([2, 2], [2]),
+        ([3, 3, 3], [3, 3]),      # multiple repeats
         ([1], []),
-        ([2], [1]),
-        ([1, 2, 3, 4, 5], []),
+        ([1, 1], [1]),
+        ([2, 1, 2, 3, 3, 4], [2, 3]),
         ([5, 4, 3, 2, 1], []),
-        ([1, 1, 2, 2], [3, 4]),
-        ([3, 3, 3], [1, 2]),
-        ([4, 3, 2, 7, 7, 2, 3, 1], [5, 6]),
-        ([], []),  # edge case, though LC won't give empty
+        ([10, 2, 5, 10, 9, 1, 1, 4, 3, 7], [10, 1]),
     ]
 
     for i, (nums, expected) in enumerate(tests, 1):
-        # copy nums so each test uses fresh input
-        result = sol.findDisappearedNumbers(nums.copy())
+        result = sol.findDuplicates(nums.copy())
         print(f"Test {i}: nums={nums}")
         print(f"  Expected: {expected}, Got: {result}")
         print("  PASS" if sorted(result) == sorted(expected) else "  FAIL")
