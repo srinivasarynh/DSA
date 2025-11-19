@@ -25,7 +25,6 @@ class Solution:
             next_greater[stack.pop()] = -1
 
         return [next_greater[num] for num in nums1]
-
 # --------------------------
 # Test Cases
 # --------------------------
