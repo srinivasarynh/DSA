@@ -1,0 +1,119 @@
+Boyer-Moore Voting Algorithm
+The Boyer-Moore Voting Algorithm is an elegant solution for finding the majority element in an array - an element that appears more than ⌊n/2⌋ times. It uses O(1) space and O(n) time, making it optimal for this problem.
+
+Core Concept
+The algorithm works on a simple principle: if we cancel out each occurrence of an element with all the other elements that are different from it, the majority element will still remain in the end.
+Think of it like a battle where the majority element fights against all others. Since it appears more than half the time, it will survive even if every other element teams up against it.
+
+How It Works
+The algorithm has two phases:
+Phase 1: Find Candidate
+  - Maintain a candidate element and a counter
+  - When counter is 0, select the current element as candidate
+  - If current element equals candidate, increment counter
+  - Otherwise, decrement counter
+
+Phase 2: Verify Candidate (only needed if majority element isn't guaranteed)
+  - Count occurrences of the candidate
+  - Check if it appears more than n/2 times
+
+Simple Example
+Array: [2, 2, 1, 1, 1, 2, 2]
+Step-by-step:
+Index 0: candidate=2, count=1
+Index 1: candidate=2, count=2  (same as candidate)
+Index 2: candidate=2, count=1  (different, decrement)
+Index 3: candidate=2, count=0  (different, decrement)
+Index 4: candidate=1, count=1  (count was 0, new candidate)
+Index 5: candidate=1, count=0  (different, decrement)
+Index 6: candidate=2, count=1  (count was 0, new candidate)
+
+Result: candidate=2, which is indeed the majority element
+
+Basic Implementation
+def majorityElement(nums):
+    # Phase 1: Find candidate
+    candidate = None
+    count = 0
+    
+    for num in nums:
+        if count == 0:
+            candidate = num
+        count += (1 if num == candidate else -1)
+    
+    # Phase 2: Verify (optional if majority guaranteed)
+    # return candidate if nums.count(candidate) > len(nums)//2 else None
+    return candidate
+
+
+Key Techniques & Variations
+1. Standard Majority Element (> n/2)
+The basic form finds elements appearing more than half the time.
+2. Generalized k-Majority Elements (> n/k)
+Extended version to find elements appearing more than n/k times. For example, finding elements that appear more than n/3 times requires tracking up to k-1 candidates.
+def majorityElement_n_by_3(nums):
+    # Can have at most 2 elements appearing > n/3 times
+    candidate1 = candidate2 = None
+    count1 = count2 = 0
+    
+    # Phase 1: Find candidates
+    for num in nums:
+        if candidate1 == num:
+            count1 += 1
+        elif candidate2 == num:
+            count2 += 1
+        elif count1 == 0:
+            candidate1 = num
+            count1 = 1
+        elif count2 == 0:
+            candidate2 = num
+            count2 = 1
+        else:
+            count1 -= 1
+            count2 -= 1
+    
+    # Phase 2: Verify both candidates
+    result = []
+    for candidate in [candidate1, candidate2]:
+        if nums.count(candidate) > len(nums) // 3:
+            result.append(candidate)
+    
+    return result
+
+3. Why It Works: Mathematical Proof
+The key insight is that the majority element has more occurrences than all other elements combined. When we pair up elements (majority vs non-majority), the majority element will have unpaired occurrences remaining.
+Mathematical guarantee: If element M appears more than n/2 times, then even if we eliminate M with every other element, we'll still have at least 1 occurrence of M left.
+
+LeetCode Problems
+Easy
+169. Majority Element - Classic Boyer-Moore application, majority element guaranteed
+1150. Check If a Number Is Majority Element in a Sorted Array - Simplified version with sorted array
+
+Medium
+229. Majority Element II - Find elements appearing > n/3 times (generalized Boyer-Moore)
+1157. Online Majority Element In Subarray - Complex variant with query ranges
+2780. Minimum Index of a Valid Split - Find split point based on majority element
+2347. Best Poker Hand - Related pattern matching problem
+1287. Element Appearing More Than 25% In Sorted Array - Variation with different threshold
+
+Hard
+Online Majority Element variations with constraints
+Problems combining Boyer-Moore with other techniques (sliding window, binary search)
+
+Time & Space Complexity
+Time: O(n) - single pass through array (two passes if verification needed)
+Space: O(1) - only stores candidate and counter
+
+Common Pitfalls
+> Forgetting verification phase when majority element isn't guaranteed
+> Off-by-one errors with the threshold (should be strictly greater than n/2, not ≥)
+> Not handling empty arrays or single-element arrays
+> Integer overflow when dealing with counts in some languages
+
+When to Use Boyer-Moore
+> Finding majority/dominant elements in a stream or array
+> Space is constrained (can't use hashmap)
+> Need optimal time complexity
+> Problem involves "more than n/k" frequency conditions
+
+The algorithm's beauty lies in its simplicity and efficiency - it's a perfect example of how clever counting can solve complex problems with minimal resources!
