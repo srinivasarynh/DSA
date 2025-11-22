@@ -155,3 +155,58 @@ Step 5: Advanced
 ✔ LRU cache
 ✔ Skip list
 ✔ Memory-efficient linked lists
+
+Common Patterns Summary
+
+Pattern ||  Use Case  ||  Key Technique 
+Single pointer  ||  Count, search, display  ||  Simple iteration
+Prev-Current  ||  Delete, insert  ||  Track previous node
+Dummy node  ||  Modify head, merge  ||  Simplify edge cases
+Slow-Fast  ||  Find middle, detect cycle  ||  Different speeds
+Two pointer gap  ||  Nth from end  ||  Fixed distance
+Runner  ||  Palindrome, reorder  ||  Look ahead
+Accumulation  ||  Sum, convert  ||  Build result
+Partition  ||  Split by condition  ||  Two separate lists
+Reversal  ||  Reverse operations  ||  Change pointers
+
+
+Problem-Solving Framework
+Step 1: Identify the Pattern
+> Need to delete? → Prev-Current or Dummy
+> Find middle? → Slow-Fast
+> From end? → Two pointer gap
+> Modify head? → Dummy node
+
+Step 2: Handle Edge Cases
+# Always check:
+if not head:           # Empty list
+    return None
+if not head.next:      # Single node
+    return head
+
+Step 3: Dry Run
+> Draw the list: 1 -> 2 -> 3 -> 4 -> None
+> Trace pointers step by step
+> Check what happens at boundaries
+
+Step 4: Code Template
+def solve(head):
+    # Edge cases
+    if not head:
+        return None
+    
+    # Setup (dummy, pointers)
+    dummy = Node(0)
+    dummy.next = head
+    current = head
+    
+    # Main traversal
+    while current:
+        # Process
+        # Move
+        current = current.next
+    
+    # Return result
+    return dummy.next
+
+Master these patterns and you'll be able to solve 90% of linked list problems efficiently!
